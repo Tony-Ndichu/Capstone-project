@@ -1,11 +1,14 @@
 import SwiftUI
 
 struct Home: View {
+    let persistence = PersistenceController.shared
+    
     var body: some View {
         NavigationView {
             TabView {
 
                 Menu()
+                    .environment(\.managedObjectContext, persistence.container.viewContext)
                     .tabItem {
                         Label("Menu", systemImage: "list.dash")
                     }
