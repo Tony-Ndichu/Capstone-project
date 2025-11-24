@@ -17,7 +17,14 @@ class PersistenceController {
     }
 
     func clear() {
-        let request = NSBatchDeleteRequest(fetchRequest: Dish.fetchRequest())
-        _ = try? container.viewContext.execute(request)
+        let fetch = NSFetchRequest<NSFetchRequestResult>(entityName: "Dish")
+        let deleteRequest = NSBatchDeleteRequest(fetchRequest: fetch)
+
+        do {
+            try container.viewContext.execute(deleteRequest)
+            try container.viewContext.save()
+        } catch {
+            print("❌ Failed to clear Dish database:", error)
+        }
     }
 }

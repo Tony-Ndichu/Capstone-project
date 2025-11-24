@@ -1,9 +1,17 @@
+//
+//  HomeHeader.swift
+//  LittleLemon
+//
+//  Created by TONY NDICHU on 11/23/25.
+//
+
+
 import SwiftUI
 
 struct HomeHeader: View {
     var body: some View {
         HStack {
-            Image("little-lemon-logo")
+            Image("logo")
                 .resizable()
                 .scaledToFit()
                 .frame(height: 40)

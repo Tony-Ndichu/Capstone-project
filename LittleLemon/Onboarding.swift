@@ -1,11 +1,5 @@
 import SwiftUI
 
-// Global UserDefaults keys
-let kFirstNameKey = "firstNameKey_ll"
-let kLastNameKey  = "lastNameKey_ll"
-let kEmailKey     = "emailKey_ll"
-let kIsLoggedIn   = "isLoggedIn_ll"
-
 struct Onboarding: View {
 
     // User input
@@ -17,19 +11,10 @@ struct Onboarding: View {
     @State var isLoggedIn = false
 
     var body: some View {
-        NavigationView {
+        NavigationStack {
 
             VStack(spacing: 20) {
-
-                // Invisible navigation trigger
-                NavigationLink(
-                    destination: Home(),
-                    isActive: $isLoggedIn
-                ) {
-                    EmptyView()
-                }
-
-                // Text fields
+                // Text fieldsq
                 TextField("First Name", text: $firstName)
                     .textFieldStyle(.roundedBorder)
 
@@ -41,27 +26,16 @@ struct Onboarding: View {
                     .keyboardType(.emailAddress)
 
                 // Registration button
-                Button("Register") {
-                    if !firstName.isEmpty &&
-                        !lastName.isEmpty &&
-                        !email.isEmpty {
-
-                        UserDefaults.standard.set(firstName, forKey: kFirstNameKey)
-                        UserDefaults.standard.set(lastName,  forKey: kLastNameKey)
-                        UserDefaults.standard.set(email,     forKey: kEmailKey)
-                        UserDefaults.standard.set(true, forKey: kIsLoggedIn)
-
-                        // Navigate to the Home screen
-                        isLoggedIn = true
-                    } else {
-                        print("Fields cannot be empty")
-                    }
-                }
-                .padding()
-                .frame(maxWidth: .infinity)
-                .background(Color.blue)
-                .foregroundColor(.white)
-                .cornerRadius(8)
+                Button {
+                                    registerUser()
+                                } label: {
+                                    Text("Register")
+                                        .frame(maxWidth: .infinity)
+                                        .padding()
+                                        .background(Color.blue)
+                                        .foregroundColor(.white)
+                                        .cornerRadius(8)
+                                }
 
                 Spacer()
             }
@@ -71,9 +45,26 @@ struct Onboarding: View {
                             if UserDefaults.standard.bool(forKey: kIsLoggedIn) {
                                 isLoggedIn = true
                             }
+            }
+            .navigationDestination(isPresented: $isLoggedIn) {
+                            Home()
                         }
         }
     }
+    
+    private func registerUser() {
+            guard !firstName.isEmpty, !lastName.isEmpty, !email.isEmpty else {
+                print("Fields cannot be empty")
+                return
+            }
+
+            UserDefaults.standard.set(firstName, forKey: kFirstNameKey)
+            UserDefaults.standard.set(lastName,  forKey: kLastNameKey)
+            UserDefaults.standard.set(email,     forKey: kEmailKey)
+            UserDefaults.standard.set(true,      forKey: kIsLoggedIn)
+
+            isLoggedIn = true
+        }
 }
 
 #Preview {

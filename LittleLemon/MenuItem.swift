@@ -13,7 +13,9 @@ struct MenuItem: Decodable, Identifiable {
     let title: String
     let image: String
     let price: String
-
-    // OPTIONAL – supports extra properties from API
     let description: String?
+
+    private enum CodingKeys: String, CodingKey {
+        case title, image, price, description
+    }
 }
